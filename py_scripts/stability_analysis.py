@@ -18,12 +18,11 @@ class StabilityCfg:
     brick_unit_length: float = 0.0078
     visualize: bool = False
     print_log: bool = False
-    world_dimension: Tuple[int, int, int] = (20, 20, 20)
     alpha: float = 0.001
     beta: float = 0.000001
 
 
-def stability_score(lego_structure, lego_library, lego_structure_filepath, cfg):
+def stability_score(lego_structure, lego_library, world_dim, cfg, lego_structure_filepath=''):
     ############### Setup ###############
     brick_library = lego_library
     g_ = cfg.g  # N/kg
@@ -32,7 +31,6 @@ def stability_score(lego_structure, lego_library, lego_structure_filepath, cfg):
     brick_unit_length = cfg.brick_unit_length  # mm
     visualize = cfg.visualize
     print_log = cfg.print_log
-    world_dim = cfg.world_dimension
     alpha = cfg.alpha
     beta = cfg.beta
 
@@ -76,8 +74,8 @@ def stability_score(lego_structure, lego_library, lego_structure_filepath, cfg):
         brick = lego_structure[key]
         brick_id = str(brick["brick_id"])
         # TODO: why ignoring 0, 1, 13?
-        if (brick_id == "0" or brick_id == "1" or brick_id == "13"):
-            continue
+        #if (brick_id == "0" or brick_id == "1" or brick_id == "13"):
+        #    continue
         if (brick["ori"] == 0):
             h = brick_library[brick_id]["height"]
             w = brick_library[brick_id]["width"]
@@ -124,8 +122,8 @@ def stability_score(lego_structure, lego_library, lego_structure_filepath, cfg):
     for key in lego_structure.keys():
         brick = lego_structure[key]
         brick_id = str(brick["brick_id"])
-        if brick_id == "0" or brick_id == "1" or brick_id == "13":
-            continue
+        #if brick_id == "0" or brick_id == "1" or brick_id == "13":
+        #    continue
         if brick["ori"] == 0:
             h = brick_library[brick_id]["height"]
             w = brick_library[brick_id]["width"]
@@ -200,8 +198,8 @@ def stability_score(lego_structure, lego_library, lego_structure_filepath, cfg):
     for key in lego_structure.keys():
         brick = lego_structure[key]
         brick_id = str(brick["brick_id"])
-        if brick_id == "0" or brick_id == "1" or brick_id == "13":
-            continue
+        #if brick_id == "0" or brick_id == "1" or brick_id == "13":
+        #    continue
         if brick["ori"] == 0:
             h = brick_library[brick_id]["height"]
             w = brick_library[brick_id]["width"]
@@ -476,7 +474,7 @@ def stability_score(lego_structure, lego_library, lego_structure_filepath, cfg):
 
     if model.Status != gp.GRB.Status.OPTIMAL:
         print('Model did not solve successfully. Check status code:', model.Status)
-        # return np.ones(world_dim), model.NumVars, model.NumConstrs, total_t, solve_t
+        return np.ones(world_dim), model.NumVars, model.NumConstrs, total_t, solve_t
 
     if visualize:
         ax = plt.figure().add_subplot(projection='3d')
@@ -484,8 +482,8 @@ def stability_score(lego_structure, lego_library, lego_structure_filepath, cfg):
     for key in lego_structure.keys():
         brick = lego_structure[key]
         brick_id = str(brick["brick_id"])
-        if brick_id == "0" or brick_id == "1" or brick_id == "13":
-            continue
+        #if brick_id == "0" or brick_id == "1" or brick_id == "13":
+        #    continue
         if brick["ori"] == 0:
             h = brick_library[brick_id]["height"]
             w = brick_library[brick_id]["width"]
